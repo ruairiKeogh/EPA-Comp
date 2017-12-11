@@ -1,10 +1,20 @@
 #!/bin/bash
 
-echo "C0 /t N /t idle" >> sythetic.dat
+echo -e "C0 \t N \t idle" > results.dat
 
-for i in {1..50}
+for i in {1..100}
 do
-	$usage = mpstat 10 -o JSON | jq '.sysstat.hosts[0].statistics[0]."cpu-load"[0].usr'
-	$idle = mpstat 10 -o JSON | jq '.sysstat.hosts[0].statistics[0]."cpu-load"[0].idle'
-	echo "$usage /t $i /t $idle" >> sythetic.dat
+	./loadtest $i&
+
+	sleep 5
+
+	C=`cat synthetic.dat | wc -l`
+
+	Idle=`mpstat -o JSON | jq '.sysstat.hosts[0].statistics[0]."cpu-load"[0].idle'`
+
+	pkill loadtest
+
+	echo -e "$C \t $i \t $Idle" >> results.dat
 done
+
+
