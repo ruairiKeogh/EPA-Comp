@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Ruairí Keogh - X00121581
 # Output for first line of Results
 echo -e "C0 \t N \t idle" > results.dat
 
